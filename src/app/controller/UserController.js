@@ -1,4 +1,5 @@
 import passwordGenerator from 'password-generator';
+import Mail from '../lib/Mail';
 
 export default {
 	async store(request, response) {
@@ -9,6 +10,13 @@ export default {
 			email,
 			password: passwordGenerator(15, false).toString(),
 		};
+
+		await Mail.sendMail({
+			from: 'Contact <contact@test.com>',
+			to: `${name} <${email}>`,
+			subject: 'User registration',
+			html: `Hello, ${name}, welcome!`,
+		});
 
 		return response.json(user);
 	},
