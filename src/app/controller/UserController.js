@@ -1,5 +1,6 @@
 import passwordGenerator from 'password-generator';
-import Mail from '../lib/Mail';
+
+import Queue from '../lib/Queue';
 
 export default {
 	async store(request, response) {
@@ -11,12 +12,7 @@ export default {
 			password: passwordGenerator(15, false).toString(),
 		};
 
-		await Mail.sendMail({
-			from: 'Contact <contact@test.com>',
-			to: `${name} <${email}>`,
-			subject: 'User registration',
-			html: `Hello, ${name}, welcome!`,
-		});
+		await Queue.add('RegistrationMail', { user });
 
 		return response.json(user);
 	},

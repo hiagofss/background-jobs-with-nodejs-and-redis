@@ -1,15 +1,12 @@
 version: '3.9'
 
 services:
-  redis:
+  redis_app:
     image: redis:alpine
-    container_name: redis
+    container_name: redis_app
     restart: always
     ports:
       - 6379:6379
-    volumes:
-      - ./data/redis-data:/var/lib/redis
-      - ./data/redis.conf:/usr/local/etc/redis/redis.conf
 
   app:
     env_file:
@@ -22,6 +19,4 @@ services:
     volumes:
       - .:/usr/app
     links:
-      - redis
-    depends_on:
-      - redis
+      - redis_app
